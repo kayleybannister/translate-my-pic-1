@@ -24,7 +24,7 @@
     "mysql2": "^1.7.0",
     "path": "^0.12.7",
     "router": "^1.3.3",
-    "sequelize": "^5.18.1",
+    "sequelize": "^5.18.2",
     "sequelize-cli": "^5.5.1"
   }
 }
