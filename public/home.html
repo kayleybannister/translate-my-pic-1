@@ -30,11 +30,11 @@
 
     <div class="col-md-6">
         <div class="card" id="lang">
-            <div id="pop-up">Preferred Language</div>
             
           <h5>Select your preferred language in the dropdown below.</h5>
           <div class="input-field col s12">
           <select class="browser-default" id="targetLanguageCodeDropdown">
+            <option value="">Select Language</option>
             <option value="es">Spanish</option>
             <option value="fr">French</option>
             <option value="it">Italian</option>
@@ -53,7 +53,6 @@
     <div class="col-md-6">
       
         <div class="card" id="img-selector">
-            <div id="img-popup">Put Image Here</div>
             <h5>Image Analyzer</h5>
             <input class="ml-3 mb-2" type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
             <img class="ml-3" id="imageUploaded" src="#" alt="" />
@@ -129,7 +128,7 @@
 </div>
 
 
-<script src="/server.js"></script>
+<script src="../server.js"></script>
 <script src="./assets/js/translate-my-pic.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script>
