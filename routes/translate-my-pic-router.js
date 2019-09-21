@@ -14,6 +14,9 @@ router.get("/auth", translateController.authUser);
 // This route performs a GET request to retrieve all translations
 router.get("/translations", translateController.getTranslations);
 
+// This route performs a GET request to retrieve all translations
+router.get("/translation", translateController.getTranslation);
+
 // This route performs a POST request to create a new translation record
 router.post("/translations", translateController.createTranslation);
 

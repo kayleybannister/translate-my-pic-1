@@ -148,6 +148,11 @@ $(document).ready(function()
           buttonsHeader.text("Speech/Delete?");
 
           var buttonsDiv = $("<div>");
+          buttonsDiv.attr(
+          {
+            "class": "buttons-div",
+            "id": "buttons-" + data[i].id
+          });
           
           var speechButton = $("<button>");
           speechButton.attr(
@@ -463,6 +468,92 @@ $(document).ready(function()
     });
   }
 
+  function speakTranslation(user, translation)
+  {
+    console.log(translation);
+
+    $.ajax(
+      {
+        method: "GET",
+        url: relativeURL + "/translation",
+        data:
+        {
+          "user_id": user,
+          "id": translation
+        }
+      }).done(function(data)
+      {
+        // Invokes function to authenticate securely to AWS so that the AWS APIs can be invoked
+        AnonLog();
+
+        console.log("T - Words: " + JSON.stringify(data));
+
+        function speakText()
+        {
+          // Create the JSON parameters for getSynthesizeSpeechUrl
+          var speechParams = {
+              OutputFormat: "mp3",
+              SampleRate: "16000",
+              Text: "",
+              TextType: "text",
+              VoiceId: "Matthew"
+          };
+
+          speechParams.Text = data[0].translated_keywords;
+
+          // Create the Polly service object and presigner object
+          var polly = new AWS.Polly({apiVersion: '2016-06-10'});
+          var signer = new AWS.Polly.Presigner(speechParams, polly)
+
+          // Create presigned URL of synthesized speech file
+          signer.getSynthesizeSpeechUrl(speechParams, function(error, url)
+          {
+            if (error)
+            {
+              var speechDiv = $("<div>");
+              speechDiv.attr("style", "margin-top: 12px;");
+
+              speechDiv.text(error);
+
+              var speechButtonDiv = "#buttons-" + translation;
+              $(speechButtonDiv).append(speechDiv);
+
+            } else
+            {
+
+                var speechButtonDiv = "#buttons-" + translation;
+                var audioSourceId = "audioSource-" + translation;
+                var audioPlaybackId = "audioPlayback-" + translation;
+
+                var speechDiv = $("<div>");
+                speechDiv.attr("style", "margin-top: 12px;");
+
+                var speechControls = $("<audio controls>");
+                speechControls.attr("id", audioPlaybackId);
+
+                var speechSource = $("<source>");
+                speechSource.attr(
+                {
+                  "id": audioSourceId,
+                  "type": "audio/mp3",
+                  "src": ""
+                });
+
+                speechControls.append(speechSource);
+                speechDiv.append(speechControls);
+                $(speechButtonDiv).append(speechDiv);
+
+                document.getElementById(audioSourceId).src = url;
+                document.getElementById(audioPlaybackId).load();
+
+            }
+          });
+        }
+
+        speakText();
+      });
+  };
+
 //js for dropdown function.... building from scratch, not using bootstrap
   function myFunction() {
     document.getElementById("myDropdown").classList.toggle("show");
@@ -494,6 +585,8 @@ $(document).ready(function()
     };
     };
 
+
+
   // jQuery listener on the the image uploader button; invokes the ProcessImage() function when an image path is provided
   $(document).on('change','#fileToUpload' , function()
   { 
@@ -507,6 +600,22 @@ $(document).ready(function()
  
   // Invocation of getTranslationHistory function when page loads
   getTranslationHistory(getCookie("user_id"));
+
+  // jQuery listener to delete translation in translation history 
+  $("#translation-history-container").on("click", ".speech-btn", function()
+  { 
+    event.preventDefault();
+
+    console.log("Speech!");
+    /*
+    var speechControls = $("<audio id='audioPlayback' controls>");
+    
+    speechDiv.append(speechControls);
+    $(".buttons-div").append(speechDiv);
+    */
+    speakTranslation(getCookie("user_id"), parseInt($(this).attr("id")));
+
+  });
 
   // jQuery listener to delete translation in translation history 
   $("#translation-history-container").on("click", ".del-btn", function()
@@ -523,4 +632,3 @@ $(document).ready(function()
     getTranslationHistory(getCookie("user_id"));
   });
 });
-   
