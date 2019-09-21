@@ -23,7 +23,6 @@
     "host": "q68u8b2buodpme2n.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "port": 3306,
     "dialect": "mysql",
-    "operatorsAliases": false,
-    "use_env_variable": "JAWSDB_URL"
+    "operatorsAliases": false
   }
 }
