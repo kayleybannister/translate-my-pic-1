@@ -78,31 +78,122 @@ $(document).ready(function()
           console.log("Analyzed Keywords: " + data[i].analyzed_keywords);
           console.log("Translated Keywords: " + data[i].translated_keywords + "\n");
 
-          var transLangDiv = $("<div>");
-          var analyzedKeywordsDiv = $("<div>");
-          var transKeywordsDiv = $("<div>");
-          var deleteButtonDiv = $("<div>");
-          var deleteButton = $("<button>");
+          var transColDiv = $("<section>");
+          transColDiv.attr(
+          {
+            "class": "col-md-12",
+            "style": "margin-top: 12px;"
+          });
 
+          var transCardDiv = $("<div>");
+          transCardDiv.attr("class", "card translation");
+
+          var transCardBodyDiv = $("<div>");
+          transCardBodyDiv.attr("class", "card-body");
+
+          var transCardTitleHeader = $("<h5>");
+          transCardTitleHeader.attr("class", "card-title mt-1");
+          transCardTitleHeader.text("Translation #: " + (i+1));
+
+          var transCardTextDiv = $("<div>");
+          transCardTextDiv.attr("class", "card-text");
+
+          var transCardDetailRow = $("<div>");
+          transCardDetailRow.attr("class", "row");
+
+          // Translation Language Column
+          var transLangCol = $("<div>");
+          transLangCol.attr("class", "col-md-3 text-left");
+
+          var transLangHeader = $("<p>");
+          transLangHeader.text("Translated Language:");
+
+          var transLangDiv = $("<div>");
+          transLangDiv.text(data[i].translated_language);
+
+          transLangCol.append(transLangHeader);
+          transLangCol.append(transLangDiv);
+
+          // Translation Keywords Column
+          var analyzedKeywordsCol = $("<div>");
+          analyzedKeywordsCol.attr("class", "col-md-3 text-left");
+
+          var analyzedKeywordsHeader = $("<p>");
+          analyzedKeywordsHeader.text("Analyzed Keywords:");
+
+          var analyzedKeywordsDiv = $("<div>");
+          analyzedKeywordsDiv.text(data[i].analyzed_keywords);
+
+          analyzedKeywordsCol.append(analyzedKeywordsHeader);
+          analyzedKeywordsCol.append(analyzedKeywordsDiv);
+
+          // Translated Keywords Column
+          var transKeywordsCol = $("<div>");
+          transKeywordsCol.attr("class", "col-md-3 text-left");
+
+          var transKeywordsHeader = $("<p>");
+          transKeywordsHeader.text("Translated Keywords:");
+
+          var transKeywordsDiv = $("<div>");
+          transKeywordsDiv.text(data[i].translated_keywords);
+
+          transKeywordsCol.append(transKeywordsHeader);
+          transKeywordsCol.append(transKeywordsDiv);
+
+          // Speech/Text Buttons Column
+          var buttonsCol = $("<div>");
+          buttonsCol.attr("class", "col-md-3 text-center");
+
+          var buttonsHeader = $("<p>");
+          buttonsHeader.text("Speech/Delete?");
+
+          var buttonsDiv = $("<div>");
+          
+          var speechButton = $("<button>");
+          speechButton.attr(
+          {
+            "type": "submit",
+            "class": "btn btn-primary speech-btn",
+            "value": "speech",
+            "id": data[i].id
+          });
+          speechButton.text("Say It");
+
+          var deleteButton = $("<button>");
           deleteButton.attr(
           {
             "type": "submit",
             "class": "btn btn-primary del-btn",
-            "value": "Delete",
+            "value": "delete",
             "id": data[i].id
           });
+          deleteButton.text("Delete Translation");
           
-          deleteButton.text("Delete");
-          deleteButtonDiv.append(deleteButton);
+          var buttonSpan = $("<span>");
+          buttonSpan.text("   ");
+        
+          buttonsDiv.append(speechButton);
+          buttonsDiv.append(buttonSpan);
+          buttonsDiv.append(deleteButton);
 
-          transLangDiv.text(data[i].translated_language);
-          analyzedKeywordsDiv.text(data[i].analyzed_keywords);
-          transKeywordsDiv.text(data[i].translated_keywords);
+          buttonsCol.append(buttonsHeader);
+          buttonsCol.append(buttonsDiv);
 
-          $("#t-language").append(transLangDiv);
-          $("#a-keywords").append(analyzedKeywordsDiv);
-          $("#t-keywords").append(transKeywordsDiv);
-          $("#delete-button").append(deleteButtonDiv);
+          // Build Translation History Rows
+          transCardDetailRow.append(transLangCol);
+          transCardDetailRow.append(analyzedKeywordsCol);
+          transCardDetailRow.append(transKeywordsCol);
+          transCardDetailRow.append(buttonsCol);
+
+          // Build Translation History Cards
+          transCardTextDiv.append(transCardDetailRow);
+          transCardTitleHeader.append(transCardTextDiv);
+          transCardBodyDiv.append(transCardTitleHeader);
+          transCardDiv.append(transCardBodyDiv);
+          transColDiv.append(transCardDiv);
+
+          // Insert Translation History Cards
+          $("#translation-history-container").append(transColDiv);
         }
       });
     }
@@ -133,10 +224,7 @@ $(document).ready(function()
     {
       console.log("Translation added to translation history!");
       
-      $("#t-language").empty();
-      $("#a-keywords").empty();
-      $("#t-keywords").empty();
-      $("#delete-button").empty();
+      $("#translation-history-container").empty();
 
       getTranslationHistory(getCookie("user_id"));
     });
@@ -421,7 +509,7 @@ $(document).ready(function()
   getTranslationHistory(getCookie("user_id"));
 
   // jQuery listener to delete translation in translation history 
-  $("#delete-button").on("click", ".del-btn", function()
+  $("#translation-history-container").on("click", ".del-btn", function()
   { 
     event.preventDefault();
     
@@ -429,10 +517,7 @@ $(document).ready(function()
     deleteTranslation(getCookie("user_id"), parseInt($(this).attr("id")));
 
     // Clears translation history container so that it can be refreshed after deletion
-    $("#t-language").empty();
-    $("#a-keywords").empty();
-    $("#t-keywords").empty();
-    $("#delete-button").empty();
+    $("#translation-history-container").empty();
 
     // Refreshes translation history container after deletion
     getTranslationHistory(getCookie("user_id"));
