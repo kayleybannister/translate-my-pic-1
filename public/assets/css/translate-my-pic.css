@@ -188,3 +188,8 @@ p {
 .input-field textarea.valid:focus~.helper-text::after {
     color: black;
 }
+
+.welcome-text
+{
+    color: white;
+}

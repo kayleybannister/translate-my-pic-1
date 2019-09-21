@@ -57,7 +57,7 @@ $(document).ready(function()
             if (data.Code == 200)
             {   
                 // Sets the user_id cookie which will then be retrieved when the home.html page loads
-                setCookie("user_id", data.id, 1);
+                setCookie("user_id", data.Token, 1);
 
                 // Redirects the user to the home.html page
                 window.location.assign("/home.html");

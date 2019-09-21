@@ -10,17 +10,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-    <title>Translate-My-Pic</title>
+    <title>Translate My Pic Plus - Home</title>
 </head>
 <body>
 
 <div class="header">
     <div class="row">
         <div class="col-md-12 text-white">
-            <h1>Translate-My-Pic</h1>
-            <br>
-            <h5>Upload a picture of an item you want to identify. This app will show you the top 5 keywords in the language of your choice.</h5>
-              
+            <h1>Translate My Pic Plus</h1>
+            <p>1. Select a language to translate the analyzed picture to.<br>
+            2. Upload a picture to be analyzed for the app.<br>
+            3. Check out the power of Translate My Pic Plus!</p>
+            <h5>Register for an account and you can also have your translation history saved, as well as have the translations synthesized into speech!</h5>      
           </div>
     </div>
 </div>
@@ -53,7 +54,7 @@
     <div class="col-md-6">
       
         <div class="card" id="img-selector">
-            <h5>Image Analyzer</h5>
+            <h4>Image Analyzer</h4>
             <input class="ml-3 mb-2" type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
             <img class="ml-3" id="imageUploaded" src="#" alt="" />
             <br>
@@ -89,41 +90,6 @@
 </div>
 </div>
 <div class="row" id="translation-history-container">
-  <div class="col-md-12">
-    <div class="card translation mt-4">
-      <div class="card-body">
-        <h5 class="card-title mt-1">Translation History</h5>
-        <div class="card-text" id="translation-history">
-          <div class="row">
-            <div class="col-md-3 text-left">
-              <p>Translated Language</p>
-              <div id="t-language">
-
-              </div>
-            </div>
-            <div class="col-md-3 text-left">
-              <p>Analyzed Keywords</p>
-              <div id="a-keywords">
-
-              </div>
-            </div>
-            <div class="col-md-3 text-left">
-              <p>Translated Keywords</p>
-              <div id="t-keywords">
-
-              </div>
-            </div>
-            <div class="col-md-3 text-left">
-                <p>Delete?</p>
-                <div id="delete-button">
-  
-                </div>
-            </div>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -142,12 +108,16 @@ $(document).ready(function()
   $("#targetLanguageCodeDropdown").change(function()
   {
     $("#img-selector").show();
+    $("#fileToUpload").show();
     $("#lang").hide();
   });
   $("#fileToUpload").change(function()
   {
     $("#keyword").show();
+
+    $("#translations").attr("style", "margin-top: 12px;")
     $("#translations").show();
+    $("#fileToUpload").hide();
   });
   });  
   </script>

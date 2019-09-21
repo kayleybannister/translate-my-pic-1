@@ -100,6 +100,23 @@ exports.getTranslations = function(req, res)
     });
 };
 
+// Retrieves a single translation not deleted for a user in the Translations table of the database
+exports.getTranslation = function(req, res)
+{
+    db.Translation.findAll(
+    {
+        where: 
+        {
+            user_id: req.query.user_id,
+            id: req.query.id,
+            deleted: false
+        }
+    }).then(function(dbTranslate)
+    {
+        res.json(dbTranslate); // Returns a JSON array of all translations
+    });
+};
+
 // Creates a new translation record in the Translations table of the database
 exports.createTranslation = function(req, res)
 {
